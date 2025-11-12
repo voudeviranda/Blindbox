@@ -29,7 +29,7 @@ const resultBox=document.getElementById('result');
 let opened=false;
 
 // Thay URL Web App của bạn vào đây
-const GOOGLE_SCRIPT_URL='YOUR_WEB_APP_URL';
+const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycbyQi-7d0-KeN4X6nslLdTe1kzSDOlOS5-A6hFxJLGo2Xb_UuRO2giu-OtWhzV4vxoN8hw/exec';
 
 boxes.forEach(box=>{box.addEventListener('click',()=>{const fbName=document.getElementById('fbName').value.trim();if(!fbName){alert('Vui lòng nhập tên Facebook trước khi khui hộp!');return;}if(opened)return;opened=true;const randomResult=results[Math.floor(Math.random()*results.length)];box.innerText='✨';setTimeout(()=>{box.innerText='🎉';resultBox.textContent=`Kết quả của bạn là: ${randomResult}`;
 // gửi dữ liệu lên Google Sheet
