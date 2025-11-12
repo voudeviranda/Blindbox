@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blind Box 🎁</title>
+  <style>
+    body {
+      background-color: #ffd6e8;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      color: #444;
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      color: #ff4d88;
+    }
+    input {
+      padding: 8px 12px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      width: 200px;
+      text-align: center;
+    }
+    .boxes {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 20px;
+    }
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .box:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .result {
+      margin-top: 30px;
+      font-size: 1.2rem;
+      color: #ff4081;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>He he cảm ơn sóp đã ủng hộ, mời sóp khui blind box 🎁</h1>
+  <input type="text" id="fbName" placeholder="Nhập tên Facebook" />
+  <div class="boxes">
+    <div class="box">🎁</div>
+    <div class="box">🎁</div>
+    <div class="box">🎁</div>
+    <div class="box">🎁</div>
+    <div class="box">🎁</div>
+    <div class="box">🎁</div>
+  </div>
+  <div class="result" id="result"></div>
+
+  <script>
+    const results = [
+      'Trả thêm 5 cá 🐟',
+      'Trả thêm 5 cá 🐟',
+      'Tặng thêm 1 comm cùng loại 💌',
+      'Req úp mặt 😳',
+      'Giảm 10k 💸',
+      'Req chibi 🎨'
+    ];
+
+    const boxes = document.querySelectorAll('.box');
+    const resultBox = document.getElementById('result');
+    let opened = false;
+
+    // Thay URL bên dưới bằng URL Web App Google Script của bạn
+    const GOOGLE_SCRIPT_URL = 'YOUR_WEB_APP_URL';
+
+    boxes.forEach(box => {
+      box.addEventListener('click', () => {
+        const fbName = document.getElementById('fbName').value.trim();
+        if (!fbName) {
+          alert('Vui lòng nhập tên Facebook trước khi khui hộp!');
+          return;
+        }
+        if (opened) return;
+        opened = true;
+        const randomResult = results[Math.floor(Math.random() * results.length)];
+        box.innerText = '✨';
+        setTimeout(() => {
+          box.innerText = '🎉';
+          resultBox.textContent = `Kết quả của bạn là: ${randomResult}`;
+          // Gửi dữ liệu lên Google Sheet
+          fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fbName: fbName, result: randomResult })
+          })
+          .then(res => res.json())
+          .then(data => console.log('Lưu dữ liệu thành công', data))
+          .catch(err => console.error('Lỗi khi lưu dữ liệu', err));
+        }, 600);
+      });
+    });
+  </script>
+</body>
+</html>
